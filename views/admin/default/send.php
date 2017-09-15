@@ -34,7 +34,7 @@
                 },
                 error: function (XHR, textStatus, errorThrown) {
                     $("#send-" + i).text("Error: " + XHR.status + " " + XHR.statusText);
-                    $.jGrowl("Error: " + XHR.status + " " + XHR.statusText, {position: 'top-right', sticky: true});
+                    //$.jGrowl("Error: " + XHR.status + " " + XHR.statusText, {position: 'top-right', sticky: true});
                 }
             });
 

@@ -1,6 +1,6 @@
 <?php
-
-class Delivery extends ActiveRecord {
+namespace panix\mod\delivery\models;
+class Delivery extends \panix\engine\db\ActiveRecord {
 
     const MODULE_ID = 'delivery';
 
@@ -25,15 +25,12 @@ class Delivery extends ActiveRecord {
                 ), $this);
     }
 
-    public static function model($className = __CLASS__) {
-        return parent::model($className);
-    }
 
     /**
      * @return string the associated database table name
      */
-    public function tableName() {
-        return '{{delivery}}';
+    public static function tableName() {
+        return '{{%delivery}}';
     }
 
     /**
@@ -52,7 +49,7 @@ class Delivery extends ActiveRecord {
     /**
      * @return array
      */
-    public function behaviors() {
+    public function behaviors222() {
         $a = array();
         $a['timezone'] = array(
             'class' => 'app.behaviors.TimezoneBehavior',
@@ -73,23 +70,10 @@ class Delivery extends ActiveRecord {
         ));
 
         if ($checkUser > 0)
-            $this->addError($attr, Yii::t('DeliveryModule.default', 'SUBSCRIBE_USER_ALREADY', array('{attr}' => $labels[$attr])));
+            $this->addError($attr, Yii::t('delivery/default', 'SUBSCRIBE_USER_ALREADY', array('{attr}' => $labels[$attr])));
         if ($checkEmail > 0)
-            $this->addError($attr, Yii::t('DeliveryModule.default', 'SUBSCRIBE_USER_ALREADY', array('{attr}' => $this->$attr)));
+            $this->addError($attr, Yii::t('delivery/default', 'SUBSCRIBE_USER_ALREADY', array('{attr}' => $this->$attr)));
     }
 
-    /**
-     * Retrieves a list of models based on the current search/filter conditions.
-     * @return ActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-     */
-    public function search() {
-        $criteria = new CDbCriteria;
-        $criteria->compare('id', $this->id);
-        $criteria->compare('email', $this->email, true);
-        $criteria->compare('date_create', $this->date_create, true);
-        $criteria->compare('switch', $this->switch);
-
-        return new ActiveDataProvider($this, array('criteria' => $criteria));
-    }
 
 }

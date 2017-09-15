@@ -1,25 +1,35 @@
 <?php
 
-
-$this->widget('ext.adminList.GridView', array(
-    'dataProvider' => $deliveryRecord->search(),
-    'enableCustomActions' => false,
-    'selectableRows' => false,
-    'name'=>$this->pageName,
-    'autoColumns'=>false,
-    'columns' => array(
-        array(
-            'class'=>'EmailColumn',
-            'name' => 'email',
-            'type' => 'raw',
-            //'value' => '$data->email'
-            ),
-        array('name' => 'date_create', 'type' => 'html', 'value' => 'CMS::date("$data->date_create")'),
-        array(
-            'class' => 'ButtonColumn',
-            'template' => '{switch}{update}{delete}',
-        ),
-    ),
-));
-
+use yii\helpers\Html;
+use panix\engine\grid\GridView;
+use yii\widgets\Pjax;
 ?>
+
+
+<?php
+
+Pjax::begin([
+    'timeout' => 50000,
+    'id' => 'pjax-container',
+    'enablePushState' => true,
+    'linkSelector' => 'a:not(.linkTarget)'
+]);
+?>
+<?=
+
+GridView::widget([
+    'tableOptions' => ['class' => 'table table-striped'],
+    'dataProvider' => $dataProvider,
+    'filterModel' => $searchModel,
+    // 'layoutOptions' => ['title' => $this->context->pageName],
+    'columns' => [
+        'email',
+        [
+            'class' => 'panix\engine\grid\columns\ActionColumn',
+            'template' => '{update} {switch} {delete}',
+        ]
+    ]
+]);
+?>
+<?php Pjax::end(); ?>
+

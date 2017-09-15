@@ -1,5 +1,5 @@
 <?php
-
+namespace panix\mod\delivery\models;
 class Form extends CFormModel {
 
     public $text;

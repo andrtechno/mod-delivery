@@ -1,6 +1,8 @@
 <?php
 
-class DefaultController extends Controller {
+namespace panix\mod\delivery\controllers;
+
+class DefaultController extends \panix\engine\controllers\WebController {
 
     //public $layout = '//layouts/main';
 
@@ -28,7 +30,5 @@ class DefaultController extends Controller {
         }
         $this->render('mod.delivery.widgets.delivery.views._delivery', array('model' => $model));
     }
-
-
 
 }

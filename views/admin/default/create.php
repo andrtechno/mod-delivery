@@ -1,16 +1,10 @@
 <div class="row">
     <div class="col-lg-7">
-        <?php
-        Yii::app()->tpl->openWidget(array(
-            'title' => Yii::t('DeliveryModule.default', 'CREATE_DELIVERY'),
-        ));
-        ?>
+
         <div id="response-box">
-            <?php echo $this->renderPartial('form', array('users' => $users, 'delivery' => $delivery, 'model' => $model, 'mails' => $mails)); ?>
+            <?php echo $this->context->renderPartial('form', array('users' => $users, 'delivery' => $delivery, 'model' => $model, 'mails' => $mails)); ?>
         </div>
-        <?php
-        Yii::app()->tpl->closeWidget();
-        ?>
+
     </div>
 
 

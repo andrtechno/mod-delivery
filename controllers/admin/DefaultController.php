@@ -1,58 +1,62 @@
 <?php
 
-class DefaultController extends AdminController {
+namespace panix\mod\delivery\controllers\admin;
 
-    public function actions() {
-        return array(
-            'delete' => array(
-                'class' => 'ext.adminList.actions.DeleteAction',
-            ),
-            'switch' => array(
-                'class' => 'ext.adminList.actions.SwitchAction',
-            ),
-        );
-    }
+use Yii;
+use panix\mod\delivery\models\Delivery;
+use panix\mod\delivery\models\DeliverySearch;
+use panix\mod\delivery\models\DeliveryForm;
+use panix\mod\user\models\User;
+
+class DefaultController extends \panix\engine\controllers\AdminController {
 
     public function actionIndex() {
-        $this->pageName = Yii::t('DeliveryModule.default', 'DELIVERYS');
+        $this->pageName = Yii::t('delivery/default', 'DELIVERYS');
 
-        $this->topButtons = array(
+        $this->buttons = array(
             array(
-                'label' => Yii::t('DeliveryModule.default', 'CREATE_DELIVERY'),
-                'url' => $this->createUrl('createDelivery'),
-                'htmlOptions' => array('class' => 'btn btn-success')
+                'label' => Yii::t('delivery/default', 'CREATE_DELIVERY'),
+                'url' => ['create-delivery'],
+                'options' => array('class' => 'btn btn-success')
             ),
             array(
-                'label' => Yii::t('DeliveryModule.default', 'CREATE_DELIVERY_MAIL'),
-                'url' => $this->createUrl('create'),
-                'htmlOptions' => array('class' => 'btn btn-success')
+                'label' => Yii::t('delivery/default', 'CREATE_DELIVERY_MAIL'),
+                'url' => ['create'],
+                'options' => array('class' => 'btn btn-success')
             )
         );
 
-        $deliveryRecord = new Delivery('search');
-        $deliveryRecord->unsetAttributes();  // clear any default values    
-        if (Yii::app()->request->getPost('Delivery')) {
-            $deliveryRecord->attributes = Yii::app()->request->getPost('Delivery');
+
+        $searchModel = new DeliverySearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+
+        return $this->render('index', [
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+        ]);
+
+
+        if (Yii::$app->request->getPost('Delivery')) {
+            $deliveryRecord->attributes = Yii::$app->request->getPost('Delivery');
         }
         $this->render('index', array('deliveryRecord' => $deliveryRecord));
     }
 
     public function actionUpdate($new = false) {
-        $this->topButtons = false;
+        $this->buttons = false;
         if ($new === true) {
             $model = new Delivery;
-            $model->unsetAttributes();
-            $this->pageName = Yii::t('deliveryModule.default', 'Создание подписчика');
+            $this->pageName = Yii::t('delivery/default', 'Создание подписчика');
         } else {
             $model = $this->loadModel($_GET['id']);
-            $this->pageName = Yii::t('deliveryModule.default', 'Редактирование подписчика');
+            $this->pageName = Yii::t('delivery/default', 'Редактирование подписчика');
         }
         $this->breadcrumbs = array(
-            Yii::t('deliveryModule.default', 'MODULE_NAME') => array('index'),
+            Yii::t('delivery/default', 'MODULE_NAME') => array('index'),
             $this->pageName
         );
-        if (Yii::app()->request->getPost('Delivery')) {
-            $model->attributes = Yii::app()->request->getPost('Delivery');
+        if (Yii::$app->request->getPost('Delivery')) {
+            $model->attributes = Yii::$app->request->getPost('Delivery');
             //$this->performAjaxValidation($model);
             if ($model->validate()) {
                 $model->save();
@@ -63,30 +67,23 @@ class DefaultController extends AdminController {
     }
 
     public function actionCreateDelivery() {
-        $this->pageName=Yii::t('deliveryModule.default', 'MODULE_NAME');
-        $this->topButtons = false;
+        $this->pageName = Yii::t('delivery/default', 'MODULE_NAME');
+        $this->buttons = false;
         $model = new DeliveryForm;
-        $delivery = Delivery::model()->findAll();
-        $mails = array();
-        $users = User::model()->subscribe()->findAll();
+        $delivery = Delivery::find()->all();
+        $mails = [];
+        $users = User::find()->where(['subscribe' => 1])->all();
         $render = 'create';
-        if (Yii::app()->request->getPost('DeliveryForm')) {
-            $model->attributes =Yii::app()->request->getPost('DeliveryForm');
-            //$this->performAjaxValidation($model);
-            if ($model->validate()) {
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
                 if ($model->from == 'all') {
                     foreach ($users as $user) {
                         $mails[] = $user->email;
                     }
-                    //if (isset($delivery)) {
                     foreach ($delivery as $subscriber) {
                         $mails[] = $subscriber->email;
                     }
-                    //} else {
-                    //    $mails_subscriber = array();
-                    //}
-                    // $mails = array_merge($mails_users, $mails_subscriber);
                 } elseif ($model->from == 'users') {
                     foreach ($users as $user) {
                         $mails[] = $user->email;
@@ -98,13 +95,15 @@ class DefaultController extends AdminController {
                 }
 
 
-                if (Yii::app()->request->isAjaxRequest) {
+                if (Yii::$app->request->isAjax) {
+
                     $render = 'send';
                 } else {
                     $render = 'create';
                 }
             } else {
-                if (Yii::app()->request->isAjaxRequest) {
+                if (Yii::$app->request->isAjax) {
+
                     $render = 'form';
                 } else {
                     $render = 'create';
@@ -112,32 +111,44 @@ class DefaultController extends AdminController {
                 //Stops the request from being sent.
                 //throw new CHttpException(404, 'Model has not been saved');
             }
+
+
+
+        $this->breadcrumbs[] = [
+            'label' => Yii::t('delivery/default', 'MODULE_NAME'),
+            'url' => ['index']
+        ];
+        $this->breadcrumbs[] = Yii::t('delivery/default', 'CREATE_DELIVERY');
+        if (Yii::$app->request->isAjax) {
+            return $this->renderAjax($render, [
+                        'users' => $users,
+                        'delivery' => $delivery,
+                        'model' => $model,
+                        'mails' => $mails
+            ]);
+        } else {
+            return $this->render($render, [
+                        'users' => $users,
+                        'delivery' => $delivery,
+                        'model' => $model,
+                        'mails' => $mails
+            ]);
         }
-
-
-        $this->breadcrumbs = array(
-            Yii::t('deliveryModule.default', 'MODULE_NAME') => array('index'),
-            Yii::t('deliveryModule.default', 'CREATE_DELIVERY')
-        );
-
-        $this->render($render, array('users' => $users, 'delivery' => $delivery, 'model' => $model, 'mails' => $mails));
     }
 
     public function actionSendmail() {
 
-      //  Yii::app()->request->enableCsrfValidation = false;
-        if (Yii::app()->request->isAjaxRequest) {
-            $host = $_SERVER['HTTP_HOST'];
-            $mailer = Yii::app()->mail;
-            $mailer->From = 'robot@' . $host;
-            $mailer->FromName = Yii::app()->settings->get('app', 'site_name');
-            $mailer->Subject = $_POST['themename'];
-            $mailer->Body = $_POST['text'];
-            $mailer->AddAddress($_POST['email']);
-            $mailer->AddReplyTo('robot@' . $host);
-            $mailer->isHtml(true);
-            $mailer->Send();
-            $mailer->ClearAddresses();
+        if (Yii::$app->request->isAjax) {
+
+
+
+            Yii::$app->mailer
+                    ->compose()//'@cart/mail/admin', ['order' => $order]
+                    ->setFrom('noreply@' . Yii::$app->request->serverName)
+                    ->setTo($_POST['email'])
+                    ->setSubject($_POST['themename'])
+                    ->setHtmlBody($_POST['text'])
+                    ->send();
         }
     }
 
@@ -156,9 +167,9 @@ class DefaultController extends AdminController {
     }
 
     public function loadModel($id) {
-        $model = Delivery::model()->findByPk($id);
+        $model = Delivery::findOne($id);
         if ($model === null)
-            throw new CHttpException(404, 'The requested page does not exist.');
+            $this->error404();
         return $model;
     }
 
@@ -171,8 +182,8 @@ class DefaultController extends AdminController {
             array(
                 'label' => Yii::t('app', 'Отправить новые товары'),
                 'url' => array('/admin/delivery/default/sendNewProduct'),
-                'icon' => 'flaticon-shopcart',
-                'visible'=>false
+                'icon' => 'shopcart',
+                'visible' => false
             ),
         );
     }

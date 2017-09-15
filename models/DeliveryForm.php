@@ -1,17 +1,18 @@
 <?php
+namespace panix\mod\delivery\models;
+class DeliveryForm extends \panix\engine\base\Model {
 
-class DeliveryForm extends FormModel {
-
-    const MODULE_ID = 'delivery';
+    protected $module = 'delivery';
 
     public $text;
     public $from;
     public $themename;
 
     public function rules() {
-        return array(
-            array('text, from, themename', 'required'),
-        );
+        return [
+            [['text', 'from', 'themename'], 'required'],
+            [['text'], 'string'],
+        ];
     }
 
 }

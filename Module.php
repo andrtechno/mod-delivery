@@ -1,6 +1,7 @@
 <?php
-
-class Module extends WebModule {
+namespace panix\mod\delivery;
+use Yii;
+class Module extends \panix\engine\WebModule {
 
     public $icon = 'sentmail';
     public $routes = array(
@@ -15,19 +16,28 @@ class Module extends WebModule {
             'modules' => array(
                 'items' => array(
                     array(
-                        'label' => $this->name,
-                        'url' => $this->adminHomeUrl,
-                        'icon' => Html::icon($this->icon),
+                        'label' => 'Delivery',
+                        'url' => ['/admin/delivery'],
+                        'icon' => $this->icon,
                     ),
                 ),
             ),
         );
     }
-
+    public function getInfo() {
+        return [
+            'label' => Yii::t('delivery/default', 'MODULE_NAME'),
+            'author' => 'andrew.panix@gmail.com',
+            'version' => '1.0',
+            'icon' => $this->icon,
+            'description' => Yii::t('delivery/default', 'MODULE_DESC'),
+            'url' => ['/admin/delivery'],
+        ];
+    }
     public static function getAllDelivery() {
         $delivery = Delivery::find()->all();
         $mails = array();
-        $users = User::model()->subscribe()->findAll();
+        $users = User::find()->subscribe()->all();
         if (count($users)) {
             foreach ($users as $user) {
                 $mails[] = $user->email;
