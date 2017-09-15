@@ -1,0 +1,21 @@
+{
+    "name": "panix/mod-delivery",
+    "description": "Module delivery",
+    "keywords": ["corner-cms", "module", "delivery"],
+    "homepage": "https://github.com/andrtechno/mod-delivery",
+    "type": "yii2-extension",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "CORNER CMS",
+            "email": "dev@corner-cms.com",
+            "homepage": "http://www.corner-cms.com/"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "panix\\mod\\delivery\\": ""
+        }
+    }
+}
