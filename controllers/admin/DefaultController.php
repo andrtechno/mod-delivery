@@ -77,40 +77,40 @@ class DefaultController extends \panix\engine\controllers\AdminController {
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
-                if ($model->from == 'all') {
-                    foreach ($users as $user) {
-                        $mails[] = $user->email;
-                    }
-                    foreach ($delivery as $subscriber) {
-                        $mails[] = $subscriber->email;
-                    }
-                } elseif ($model->from == 'users') {
-                    foreach ($users as $user) {
-                        $mails[] = $user->email;
-                    }
-                } else {
-                    foreach ($delivery as $subscriber) {
-                        $mails[] = $subscriber->email;
-                    }
+            if ($model->from == 'all') {
+                foreach ($users as $user) {
+                    $mails[] = $user->email;
                 }
-
-
-                if (Yii::$app->request->isAjax) {
-
-                    $render = 'send';
-                } else {
-                    $render = 'create';
+                foreach ($delivery as $subscriber) {
+                    $mails[] = $subscriber->email;
+                }
+            } elseif ($model->from == 'users') {
+                foreach ($users as $user) {
+                    $mails[] = $user->email;
                 }
             } else {
-                if (Yii::$app->request->isAjax) {
-
-                    $render = 'form';
-                } else {
-                    $render = 'create';
+                foreach ($delivery as $subscriber) {
+                    $mails[] = $subscriber->email;
                 }
-                //Stops the request from being sent.
-                //throw new CHttpException(404, 'Model has not been saved');
             }
+
+
+            if (Yii::$app->request->isAjax) {
+
+                $render = 'send';
+            } else {
+                $render = 'create';
+            }
+        } else {
+            if (Yii::$app->request->isAjax) {
+
+                $render = 'form';
+            } else {
+                $render = 'create';
+            }
+            //Stops the request from being sent.
+            //throw new CHttpException(404, 'Model has not been saved');
+        }
 
 
 
@@ -137,11 +137,7 @@ class DefaultController extends \panix\engine\controllers\AdminController {
     }
 
     public function actionSendmail() {
-
-        if (Yii::$app->request->isAjax) {
-
-
-
+        if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
             Yii::$app->mailer
                     ->compose()//'@cart/mail/admin', ['order' => $order]
                     ->setFrom('noreply@' . Yii::$app->request->serverName)
@@ -153,7 +149,7 @@ class DefaultController extends \panix\engine\controllers\AdminController {
     }
 
     public function actionSendNewProduct() {
-        $products = ShopProduct::model()->newToDay()->findAll();
+        $products = Product::model()->newToDay()->findAll();
         if (count($products)) {
             foreach ($products as $product) {
                 print_r($product->name);
