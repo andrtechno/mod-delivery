@@ -1,6 +1,6 @@
 <?php
 namespace panix\mod\delivery\models;
-class Form extends CFormModel {
+class Form extends \yii\base\Model {
 
     public $text;
     public $from;
