@@ -1,6 +1,6 @@
 mod-delivery
 ===========
-Module for  CORNER CMS
+Module for  Pixelion CMS
 
 [![Latest Stable Version](https://poser.pugx.org/panix/mod-delivery/v/stable)](https://packagist.org/packages/panix/mod-delivery) [![Total Downloads](https://poser.pugx.org/panix/mod-delivery/downloads)](https://packagist.org/packages/panix/mod-delivery) [![Monthly Downloads](https://poser.pugx.org/panix/mod-delivery/d/monthly)](https://packagist.org/packages/panix/mod-delivery) [![Daily Downloads](https://poser.pugx.org/panix/mod-delivery/d/daily)](https://packagist.org/packages/panix/mod-delivery) [![Latest Unstable Version](https://poser.pugx.org/panix/mod-delivery/v/unstable)](https://packagist.org/packages/panix/mod-delivery) [![License](https://poser.pugx.org/panix/mod-delivery/license)](https://packagist.org/packages/panix/mod-delivery)
 
