@@ -6,13 +6,13 @@
     function doTask(taskNum, next, i, num) {
         var time = Math.floor(Math.random() * 3000);
         $('.progress').removeClass('hidden');
-        $("#sended-result").prepend('<div id="send-' + i + '" class="col-xs-12">Подготовка...</div>');
+        $("#sended-result").prepend('<div id="send-' + i + '" class="col">Подготовка...</div>');
         setTimeout(function () {
             //    console.log(taskNum);
 
             $.ajax({
                 type: "POST",
-                url: "/admin/delivery/default/sendmail",
+                url: "/admin/delivery/default/send-mail",
                 data: {
                     email: taskNum,
                     text: "<?php echo $model->text ?>",
@@ -70,30 +70,20 @@
 
 
 
-
-
-
-
-
-
 </script>
-<div class="form-horizontal">
-    <div class="form-group">
-        <div class="col-sm-4">Тема письма:</div>
-        <div class="col-sm-8"><?php echo $model->themename ?></div>
-
+<div>
+    <div class="form-group row">
+        <div class="col-sm-4"><strong>Тема письма:</strong></div>
+        <div class="col-sm-8"><?= $model->themename ?></div>
     </div>
-    <div class="form-group">
-        <div class="col-sm-4">Содержание письма:</div>
-        <div class="col-sm-8"><?php echo $model->text ?></div>
-
+    <div class="form-group row">
+        <div class="col-sm-4"><strong>Содержание письма:</strong></div>
+        <div class="col-sm-8"><?= $model->text ?></div>
     </div>
-    <div class="form-group">
-        <div class="col-sm-4">Кому отправлять</div>
-        <div class="col-sm-8"><?php echo $model->from ?></div>
-
+    <div class="form-group row">
+        <div class="col-sm-4"><strong>Кому отправлять:</strong></div>
+        <div class="col-sm-8"><?= $model->from ?></div>
     </div>
-
 </div>
 
 

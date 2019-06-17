@@ -1,6 +1,11 @@
 <?php
+
 namespace panix\mod\delivery\models;
-class DeliveryForm extends \panix\engine\base\Model {
+
+use panix\engine\base\Model;
+
+class DeliveryForm extends Model
+{
 
     protected $module = 'delivery';
 
@@ -8,7 +13,8 @@ class DeliveryForm extends \panix\engine\base\Model {
     public $from;
     public $themename;
 
-    public function rules() {
+    public function rules()
+    {
         return [
             [['text', 'from', 'themename'], 'required'],
             [['text'], 'string'],

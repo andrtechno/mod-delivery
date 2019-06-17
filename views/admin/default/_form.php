@@ -27,11 +27,6 @@ use panix\ext\tinymce\TinyMce;
 <?php
 $form = ActiveForm::begin([
     'id' => 'div-form',
-    'enableClientValidation' => true,
-
-    'options' => [
-        'class' => 'form-horizontal',
-    ]
 ]);
 
 
@@ -46,11 +41,13 @@ $countAll = count(yii\helpers\ArrayHelper::merge($users, $delivery));
 
 
 
-<?= $form->field($model, 'text')->widget(TinyMce::class, [
+<?php
+/*echo $form->field($model, 'text')->widget(TinyMce::class, [
     'options' => ['rows' => 6],
-]);
+]);*/
+echo $form->field($model, 'text')->textarea(['rows' => 6]);
 ?>
-<?php echo $form->field($model, 'from')->dropDownList(array('all' => 'Всем (' . $countAll . ')', 'users' => 'Пользователям (' . $countUsers . ')', 'delivery' => 'Подписчикам (' . $countDelivery . ')'), array('class' => 'select form-control')); ?>
+<?php echo $form->field($model, 'from')->dropDownList(['all' => 'Всем (' . $countAll . ')', 'users' => 'Пользователям (' . $countUsers . ')', 'delivery' => 'Подписчикам (' . $countDelivery . ')'], ['class' => 'select form-control']); ?>
 
 <div class="form-group text-center">
         <a href="javascript:void(0)" class="btn btn-success" onclick="send('#div-form', '#response-box')">Начать отправку!</a>

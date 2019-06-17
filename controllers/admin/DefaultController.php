@@ -7,6 +7,7 @@ use panix\mod\delivery\models\Delivery;
 use panix\mod\delivery\models\DeliverySearch;
 use panix\mod\delivery\models\DeliveryForm;
 use panix\mod\user\models\User;
+use yii\base\Exception;
 
 class DefaultController extends \panix\engine\controllers\AdminController
 {
@@ -34,7 +35,7 @@ class DefaultController extends \panix\engine\controllers\AdminController
                 'options' => array('class' => 'btn btn-success')
             ],
             [
-                'label' => Yii::t('delivery/default', 'CREATE_DELIVERY_MAIL'),
+                'label' => Yii::t('delivery/default', 'CREATE_SUBSCRIBER'),
                 'url' => ['create'],
                 'options' => array('class' => 'btn btn-success')
             ]
@@ -76,59 +77,64 @@ class DefaultController extends \panix\engine\controllers\AdminController
 
     public function actionCreateDelivery()
     {
-        $this->pageName = Yii::t('delivery/default', 'MODULE_NAME');
+        $this->pageName = Yii::t('delivery/default', 'CREATE_DELIVERY');
         $this->buttons = false;
         $model = new DeliveryForm;
         $delivery = Delivery::find()->all();
         $mails = [];
         $users = User::find()->where(['subscribe' => 1])->all();
-        $render = 'create';
+        $render = 'create-send';
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
-            if ($model->from == 'all') {
-                foreach ($users as $user) {
-                    $mails[] = $user->email;
+        $this->breadcrumbs[] = [
+            'label' => Yii::t('delivery/default', 'MODULE_NAME'),
+            'url' => ['index']
+        ];
+        $this->breadcrumbs[] = $this->pageName;
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->validate()) {
+
+                if ($model->from == 'all') {
+                    foreach ($users as $user) {
+                        $mails[] = $user->email;
+                    }
+                    foreach ($delivery as $subscriber) {
+                        $mails[] = $subscriber->email;
+                    }
+                } elseif ($model->from == 'users') {
+                    foreach ($users as $user) {
+                        $mails[] = $user->email;
+                    }
+                } else {
+                    foreach ($delivery as $subscriber) {
+                        $mails[] = $subscriber->email;
+                    }
                 }
-                foreach ($delivery as $subscriber) {
-                    $mails[] = $subscriber->email;
-                }
-            } elseif ($model->from == 'users') {
-                foreach ($users as $user) {
-                    $mails[] = $user->email;
+
+
+                if (Yii::$app->request->isAjax) {
+
+                    $render = 'send';
+                } else {
+                    $render = 'create-send';
                 }
             } else {
-                foreach ($delivery as $subscriber) {
-                    $mails[] = $subscriber->email;
+                print_r($model->getErrors());
+                die;
+                if (Yii::$app->request->isAjax) {
+
+                    $render = '_form';
+                } else {
+                    $render = 'create-send';
                 }
+                //Stops the request from being sent.
+                //throw new CHttpException(404, 'Model has not been saved');
             }
-
-
-            if (Yii::$app->request->isAjax) {
-
-                $render = 'send';
-            } else {
-                $render = 'create';
-            }
-        } else {
-            if (Yii::$app->request->isAjax) {
-
-                $render = 'form';
-            } else {
-                $render = 'create';
-            }
-            //Stops the request from being sent.
-            //throw new CHttpException(404, 'Model has not been saved');
         }
 
-
-        //$this->breadcrumbs[] = [
-        //    'label' => Yii::t('delivery/default', 'MODULE_NAME'),
-        //     'url' => ['index']
-        // ];
-        //$this->breadcrumbs[] = Yii::t('delivery/default', 'CREATE_DELIVERY');
         if (Yii::$app->request->isAjax) {
-            return $this->renderAjax($render, [
+            return $this->renderPartial($render, [
                 'users' => $users,
                 'delivery' => $delivery,
                 'model' => $model,
@@ -144,16 +150,21 @@ class DefaultController extends \panix\engine\controllers\AdminController
         }
     }
 
-    public function actionSendmail()
+    public function actionSendMail()
     {
-        if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
-            Yii::$app->mailer
-                ->compose()//'@cart/mail/admin', ['order' => $order]
-                ->setFrom('noreply@' . Yii::$app->request->serverName)
-                ->setTo($_POST['email'])
-                ->setSubject($_POST['themename'])
-                ->setHtmlBody($_POST['text'])
-                ->send();
+        $request = Yii::$app->request;
+        if ($request->isAjax && $request->isPost) {
+            try {
+                Yii::$app->mailer->compose()//'@cart/mail/admin', ['order' => $order]
+                ->setFrom('noreply@' . $request->serverName)
+                    ->setTo($request->post('email'))
+                    //->setTo(['dev@pixelion.com.ua','andrew.panix@gmail.com'])
+                    ->setSubject($request->post('themename'))
+                    ->setHtmlBody($request->post('text'))
+                    ->send();
+            } catch (Exception $exception) {
+                throw new Exception($exception->getMessage());
+            }
         }
     }
 
@@ -169,7 +180,7 @@ class DefaultController extends \panix\engine\controllers\AdminController
         } else {
             $this->setFlashMessage(Yii::t('app', 'Новых товаров за сегодня небыло добавлено!'));
         }
-        $this->redirect(array('index'));
+        $this->redirect(['index']);
     }
 
 
@@ -179,14 +190,14 @@ class DefaultController extends \panix\engine\controllers\AdminController
      */
     public function getAddonsMenu()
     {
-        return array(
-            array(
+        return [
+            [
                 'label' => Yii::t('app', 'Отправить новые товары'),
-                'url' => array('/admin/delivery/default/sendNewProduct'),
+                'url' => ['/admin/delivery/default/sendNewProduct'],
                 'icon' => 'shopcart',
                 'visible' => false
-            ),
-        );
+            ],
+        ];
     }
 
 }
