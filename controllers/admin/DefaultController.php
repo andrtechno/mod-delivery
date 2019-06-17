@@ -26,22 +26,21 @@ class DefaultController extends \panix\engine\controllers\AdminController
 
     public function actionIndex()
     {
-        $this->pageName = Yii::t('delivery/default', 'DELIVERYS');
-
-        $this->buttons = array(
-            array(
+        $this->pageName = Yii::t('delivery/default', 'FOLLOWERS');
+        $this->buttons = [
+            [
                 'label' => Yii::t('delivery/default', 'CREATE_DELIVERY'),
                 'url' => ['create-delivery'],
                 'options' => array('class' => 'btn btn-success')
-            ),
-            array(
+            ],
+            [
                 'label' => Yii::t('delivery/default', 'CREATE_DELIVERY_MAIL'),
                 'url' => ['create'],
                 'options' => array('class' => 'btn btn-success')
-            )
-        );
+            ]
+        ];
 
-
+        $this->breadcrumbs[] = Yii::t('delivery/default', 'MODULE_NAME');
         $searchModel = new DeliverySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
@@ -50,33 +49,21 @@ class DefaultController extends \panix\engine\controllers\AdminController
             'searchModel' => $searchModel,
         ]);
 
-
-        if (Yii::$app->request->getPost('Delivery')) {
-            $deliveryRecord->attributes = Yii::$app->request->getPost('Delivery');
-        }
-        $this->render('index', array('deliveryRecord' => $deliveryRecord));
     }
 
     public function actionUpdate($id = false)
     {
-        $this->buttons = false;
-
-
         $model = Delivery::findModel($id);
 
-        if ($id === true) {
-            $this->pageName = Yii::t('delivery/default', 'Редактирование подписчика');
+        $this->buttons = false;
 
-        } else {
-            $this->pageName = Yii::t('delivery/default', 'Добавить подписчика');
-        }
+        $this->pageName = Yii::t('delivery/default', ($model->isNewRecord) ? 'CREATE_SUBSCRIBER' : 'UPDATE_SUBSCRIBER');
 
         $this->breadcrumbs[] = [
             'label' => Yii::t('delivery/default', 'MODULE_NAME'),
             'url' => ['index']
         ];
         $this->breadcrumbs[] = $this->pageName;
-
 
         $post = Yii::$app->request->post();
         if ($model->load($post) && $model->validate()) {
