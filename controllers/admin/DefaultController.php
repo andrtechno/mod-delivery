@@ -8,9 +8,11 @@ use panix\mod\delivery\models\DeliverySearch;
 use panix\mod\delivery\models\DeliveryForm;
 use panix\mod\user\models\User;
 
-class DefaultController extends \panix\engine\controllers\AdminController {
+class DefaultController extends \panix\engine\controllers\AdminController
+{
 
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $this->pageName = Yii::t('delivery/default', 'DELIVERYS');
 
         $this->buttons = array(
@@ -31,8 +33,8 @@ class DefaultController extends \panix\engine\controllers\AdminController {
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
         return $this->render('index', [
-                    'dataProvider' => $dataProvider,
-                    'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
         ]);
 
 
@@ -42,31 +44,38 @@ class DefaultController extends \panix\engine\controllers\AdminController {
         $this->render('index', array('deliveryRecord' => $deliveryRecord));
     }
 
-    public function actionUpdate($new = false) {
+    public function actionUpdate($id = false)
+    {
         $this->buttons = false;
-        if ($new === true) {
-            $model = new Delivery;
-            $this->pageName = Yii::t('delivery/default', 'Создание подписчика');
-        } else {
-            $model = $this->loadModel($_GET['id']);
+
+
+        $model = Delivery::findModel($id);
+
+        if ($id === true) {
             $this->pageName = Yii::t('delivery/default', 'Редактирование подписчика');
+
+        } else {
+            $this->pageName = Yii::t('delivery/default', 'Добавить подписчика');
         }
-        $this->breadcrumbs = array(
-            Yii::t('delivery/default', 'MODULE_NAME') => array('index'),
-            $this->pageName
-        );
-        if (Yii::$app->request->getPost('Delivery')) {
-            $model->attributes = Yii::$app->request->getPost('Delivery');
-            //$this->performAjaxValidation($model);
-            if ($model->validate()) {
-                $model->save();
-                $this->redirect(array('index'));
-            }
+
+        $this->breadcrumbs[] = [
+            'label' => Yii::t('delivery/default', 'MODULE_NAME'),
+            'url' => ['index']
+        ];
+        $this->breadcrumbs[] = $this->pageName;
+
+
+        $post = Yii::$app->request->post();
+        if ($model->load($post) && $model->validate()) {
+            $model->save();
+            $this->redirect('index');
+
         }
-        $this->render('update', array('model' => $model));
+        return $this->render('update', array('model' => $model));
     }
 
-    public function actionCreateDelivery() {
+    public function actionCreateDelivery()
+    {
         $this->pageName = Yii::t('delivery/default', 'MODULE_NAME');
         $this->buttons = false;
         $model = new DeliveryForm;
@@ -113,42 +122,43 @@ class DefaultController extends \panix\engine\controllers\AdminController {
         }
 
 
-
-        $this->breadcrumbs[] = [
-            'label' => Yii::t('delivery/default', 'MODULE_NAME'),
-            'url' => ['index']
-        ];
-        $this->breadcrumbs[] = Yii::t('delivery/default', 'CREATE_DELIVERY');
+        //$this->breadcrumbs[] = [
+        //    'label' => Yii::t('delivery/default', 'MODULE_NAME'),
+        //     'url' => ['index']
+        // ];
+        //$this->breadcrumbs[] = Yii::t('delivery/default', 'CREATE_DELIVERY');
         if (Yii::$app->request->isAjax) {
             return $this->renderAjax($render, [
-                        'users' => $users,
-                        'delivery' => $delivery,
-                        'model' => $model,
-                        'mails' => $mails
+                'users' => $users,
+                'delivery' => $delivery,
+                'model' => $model,
+                'mails' => $mails
             ]);
         } else {
             return $this->render($render, [
-                        'users' => $users,
-                        'delivery' => $delivery,
-                        'model' => $model,
-                        'mails' => $mails
+                'users' => $users,
+                'delivery' => $delivery,
+                'model' => $model,
+                'mails' => $mails
             ]);
         }
     }
 
-    public function actionSendmail() {
+    public function actionSendmail()
+    {
         if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
             Yii::$app->mailer
-                    ->compose()//'@cart/mail/admin', ['order' => $order]
-                    ->setFrom('noreply@' . Yii::$app->request->serverName)
-                    ->setTo($_POST['email'])
-                    ->setSubject($_POST['themename'])
-                    ->setHtmlBody($_POST['text'])
-                    ->send();
+                ->compose()//'@cart/mail/admin', ['order' => $order]
+                ->setFrom('noreply@' . Yii::$app->request->serverName)
+                ->setTo($_POST['email'])
+                ->setSubject($_POST['themename'])
+                ->setHtmlBody($_POST['text'])
+                ->send();
         }
     }
 
-    public function actionSendNewProduct() {
+    public function actionSendNewProduct()
+    {
         $products = Product::model()->newToDay()->findAll();
         if (count($products)) {
             foreach ($products as $product) {
@@ -162,18 +172,13 @@ class DefaultController extends \panix\engine\controllers\AdminController {
         $this->redirect(array('index'));
     }
 
-    public function loadModel($id) {
-        $model = Delivery::findOne($id);
-        if ($model === null)
-            $this->error404();
-        return $model;
-    }
 
     /**
      * Дополнительное меню Контроллера.
      * @return array
      */
-    public function getAddonsMenu() {
+    public function getAddonsMenu()
+    {
         return array(
             array(
                 'label' => Yii::t('app', 'Отправить новые товары'),

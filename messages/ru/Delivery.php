@@ -1,5 +1,6 @@
 <?php
 return [
-    'EMAIL'=>'E-mail',
-    'DATE_CREATE'=>'Дата подписки',
+    'NAME' => 'Имя',
+    'EMAIL' => 'E-mail',
+    'CREATED_AT' => 'Дата подписки',
 ];
