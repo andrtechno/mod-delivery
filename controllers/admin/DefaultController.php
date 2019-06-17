@@ -10,6 +10,19 @@ use panix\mod\user\models\User;
 
 class DefaultController extends \panix\engine\controllers\AdminController
 {
+    public function actions()
+    {
+        return [
+            'switch' => [
+                'class' => \panix\engine\actions\SwitchAction::class,
+                'modelClass' => Delivery::class,
+            ],
+            'delete' => [
+                'class' => \panix\engine\actions\DeleteAction::class,
+                'modelClass' => Delivery::class,
+            ],
+        ];
+    }
 
     public function actionIndex()
     {

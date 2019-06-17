@@ -9,9 +9,7 @@ use panix\mod\user\models\User;
 
 class Delivery extends ActiveRecord
 {
-
     const MODULE_ID = 'delivery';
-
 
     /**
      * @inheritdoc
@@ -27,9 +25,10 @@ class Delivery extends ActiveRecord
     public function rules()
     {
         return [
+            ['email', 'unique'],
             [['email'], 'required'],
             [['name'], 'string'],
-            ['email', 'validateUserEmail'],
+            ['email', 'validateUserEmail', 'on' => 'insert'],
             ['email', 'email'],
             ['email', 'match', 'pattern' => '/^[\da-z][-_\d\.a-z]*@(?:[\da-z][-_\da-z]*\.)+[a-z]{2,5}$/iu'],
 
