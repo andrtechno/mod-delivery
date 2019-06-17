@@ -134,7 +134,7 @@ class DefaultController extends \panix\engine\controllers\AdminController
         }
 
         if (Yii::$app->request->isAjax) {
-            return $this->renderPartial($render, [
+            return $this->renderAjax($render, [
                 'users' => $users,
                 'delivery' => $delivery,
                 'model' => $model,

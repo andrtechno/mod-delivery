@@ -1,7 +1,5 @@
 <script>
-
-
-    var tasks = jQuery.unique(<?php echo json_encode($mails) ?>);
+    var tasks = jQuery.unique(<?= json_encode($mails);?>);
 
     function doTask(taskNum, next, i, num) {
         var time = Math.floor(Math.random() * 3000);
@@ -37,9 +35,6 @@
                     //$.jGrowl("Error: " + XHR.status + " " + XHR.statusText, {position: 'top-right', sticky: true});
                 }
             });
-
-
-
         }, time)
     }
 
@@ -48,7 +43,6 @@
             doTask(taskNum, next, i, num);
         }
     }
-
 
     $("#progress-send").html("Отправлено: <span id='sended'>0</span> из <span id='total'>" + tasks.length + "</span>");
     for (var i = 0; i < tasks.length; i++) {
@@ -63,13 +57,6 @@
     });
 
     $(document).dequeue('tasks');
-
-
-
-
-
-
-
 </script>
 <div>
     <div class="form-group row">
@@ -85,5 +72,3 @@
         <div class="col-sm-8"><?= $model->from ?></div>
     </div>
 </div>
-
-
