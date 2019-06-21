@@ -1,7 +1,13 @@
+<?php
+/**
+ * @var
+ */
+?>
+
 <p><?= Yii::t('SubscribeWidget.default', 'WGT_TEXT') ?></p>
 <?php
-if (Yii::app()->user->hasFlash('success')) {
-    Yii::app()->tpl->alert('success', Yii::app()->user->getFlash('success'));
+if (Yii::$app->user->hasFlash('success')) {
+    Yii::$app->tpl->alert('success', Yii::app()->user->getFlash('success'));
 } else {
 
     $form = $this->beginWidget('CActiveForm', array(
