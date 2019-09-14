@@ -65,11 +65,11 @@ class DefaultController extends \panix\engine\controllers\AdminController
             'url' => ['index']
         ];
         $this->breadcrumbs[] = $this->pageName;
-
+        $isNew = $model->isNewRecord;
         $post = Yii::$app->request->post();
         if ($model->load($post) && $model->validate()) {
             $model->save();
-            $this->redirect('index');
+            $this->redirectPage($isNew, $post);
 
         }
         return $this->render('update', array('model' => $model));
