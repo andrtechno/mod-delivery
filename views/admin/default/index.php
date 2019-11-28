@@ -5,10 +5,7 @@ use yii\widgets\Pjax;
 
 
 Pjax::begin([
-    'timeout' => 50000,
-    'id' => 'pjax-container',
-    'enablePushState' => true,
-    'linkSelector' => 'a:not(.linkTarget)'
+    'id' => 'pjax-grid-subscribe',
 ]);
 
 echo GridView::widget([

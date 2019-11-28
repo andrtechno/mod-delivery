@@ -3,8 +3,8 @@
 namespace panix\mod\delivery\models;
 
 use Yii;
-use panix\engine\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use panix\engine\db\ActiveRecord;
 use panix\mod\user\models\User;
 
 /**
@@ -16,6 +16,8 @@ use panix\mod\user\models\User;
  */
 class Subscribers extends ActiveRecord
 {
+
+    const route = '/admin/delivery/default';
     const MODULE_ID = 'delivery';
 
     /**
@@ -41,7 +43,7 @@ class Subscribers extends ActiveRecord
     }
 
     /**
-     * @return array
+     * @inheritdoc
      */
     public function behaviors()
     {
