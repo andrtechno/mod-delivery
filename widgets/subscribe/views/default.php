@@ -1,31 +1,26 @@
 <?php
 /** @var \yii\web\View $this */
-
+$result['success'] = false;
 $this->registerJs("
-    /*function send(formid, reload){
-        var str = $(formid).serialize();
-        $.ajax({
-            url: $(formid).attr('action'),
-            type: 'POST',
-            data: str,
-            success: function(data){
-                $(reload).html(data);
-            },
-            complete: function(){
+/*
+var xhr;
 
-            } 
-        });
-    }*/
-    
-    
-$('form#subscribe-form').on('beforeSubmit', function(){
-    var data = $(this).serialize();
-    $.ajax({
+      
+$(document).submit('#subscribe-form', function(){
+    if (typeof xhr !== 'undefined')
+      xhr.abort();
+    xhr = $.ajax({
         url: $(this).attr('action'),
         type: 'POST',
-        data: data,
-        success: function(res){
-            console.log(res);
+        data: $(this).serialize(),
+        success: function(response){
+            console.log($('#container-subscribe'));
+            $('#container-subscribe').html(response);
+             $('#container-subscribe').html('dsadsa');
+             
+             
+             document.getElementById(\"container-subscribe\").innerHTML = \"Hello World!\";
+
         },
         error: function(){
             alert('Error!');
@@ -33,13 +28,13 @@ $('form#subscribe-form').on('beforeSubmit', function(){
     });
     return false;
 });
- 
-")
+ */
+");
 ?>
 <div class="newsletter">
-    <h3 class="section-title"><?= Yii::t('delivery/default', 'WGT_NAME') ?></h3>
-    <div class="sidebar-widget-body" id="side-subscribe">
-        <?php echo $this->render('_subscribe', ['model' => $model]); ?>
+    <h3 class="section-title"><?= Yii::t('wgt_SubscribeWidget/default', 'WGT_NAME') ?></h3>
+    <div class="sidebar-widget-body" id="container-subscribe">
+        <?= $this->render('_subscribe', ['model' => $model, 'result' => $result]); ?>
 
     </div>
 </div>

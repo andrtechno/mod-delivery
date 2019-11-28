@@ -1,20 +1,17 @@
 <?php
-/**
- * @var
- */
 
 use yii\widgets\ActiveForm;
 use panix\engine\Html;
 
-$model = new \panix\mod\delivery\widgets\subscribe\SubscribeForm();
+/** @var \yii\web\View $this */
+
 ?>
-
-    <p><?= Yii::t('delivery/default', 'WGT_TEXT') ?></p>
+    <p><?= Yii::t('wgt_SubscribeWidget/default', 'WGT_TEXT') ?></p>
 <?php
-if (Yii::$app->session->hasFlash('success')) {
-    echo Yii::$app->session->getFlash('success');
+if ($result['success']) {
+    echo 'ok';
 } else {
-
+    \panix\mod\delivery\widgets\subscribe\SubscribeAsset::register($this);
     /*$form = $this->beginWidget('CActiveForm', array(
         'enableAjaxValidation' => true,
         'id' => 'delivery-form',
@@ -33,22 +30,24 @@ if (Yii::$app->session->hasFlash('success')) {
     if ($model->hasErrors())
         $form->error($model, 'email');*/
     ?>
-
+<div class="subscribe_form">
     <?php $form = ActiveForm::begin([
         'action' => ['/delivery/subscribe'],
-        'id' => 'subscribe-form'
+        'id' => 'subscribe-form',
+        'options'=>[
+                'class'=>'mc-form footer-newsletter'
+        ]
+        //'enableAjaxValidation' => true,
     ]); ?>
     <?= $form->field($model, 'email')
         ->textInput([
             'class' => 'form-control',
             'placeholder' => $model->getAttributeLabel('email')
-        ]); ?>
+        ])->label(false); ?>
     <div class="form-group">
-        <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton(Yii::t('delivery/default', 'BUTTON'), ['class' => 'btn btn-primary']) ?>
     </div>
     <?php ActiveForm::end(); ?>
-    <a href="javascript:void(0)" class="btn btn-default"
-       onclick="send('#delivery-form','#side-subscribe')"><?= Yii::t('delivery/default', 'BUTTON') ?></a>
-
+</div>
 
 <?php } ?>

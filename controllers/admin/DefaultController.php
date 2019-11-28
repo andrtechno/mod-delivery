@@ -3,24 +3,25 @@
 namespace panix\mod\delivery\controllers\admin;
 
 use Yii;
-use panix\mod\delivery\models\Delivery;
-use panix\mod\delivery\models\DeliverySearch;
+use panix\mod\delivery\models\Subscribers;
+use panix\mod\delivery\models\SubscribersSearch;
 use panix\mod\delivery\models\DeliveryForm;
 use panix\mod\user\models\User;
 use yii\base\Exception;
+use panix\engine\controllers\AdminController;
 
-class DefaultController extends \panix\engine\controllers\AdminController
+class DefaultController extends AdminController
 {
     public function actions()
     {
         return [
             'switch' => [
                 'class' => \panix\engine\actions\SwitchAction::class,
-                'modelClass' => Delivery::class,
+                'modelClass' => Subscribers::class,
             ],
             'delete' => [
                 'class' => \panix\engine\actions\DeleteAction::class,
-                'modelClass' => Delivery::class,
+                'modelClass' => Subscribers::class,
             ],
         ];
     }
@@ -42,7 +43,7 @@ class DefaultController extends \panix\engine\controllers\AdminController
         ];
 
         $this->breadcrumbs[] = Yii::t('delivery/default', 'MODULE_NAME');
-        $searchModel = new DeliverySearch();
+        $searchModel = new SubscribersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
         return $this->render('index', [
@@ -54,7 +55,7 @@ class DefaultController extends \panix\engine\controllers\AdminController
 
     public function actionUpdate($id = false)
     {
-        $model = Delivery::findModel($id);
+        $model = Subscribers::findModel($id);
 
         $this->buttons = false;
 
@@ -80,7 +81,7 @@ class DefaultController extends \panix\engine\controllers\AdminController
         $this->pageName = Yii::t('delivery/default', 'CREATE_DELIVERY');
         $this->buttons = false;
         $model = new DeliveryForm;
-        $delivery = Delivery::find()->all();
+        $delivery = Subscribers::find()->all();
         $mails = [];
         $users = User::find()->where(['subscribe' => 1])->all();
         $render = 'create-send';

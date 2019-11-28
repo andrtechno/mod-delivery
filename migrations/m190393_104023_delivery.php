@@ -12,14 +12,14 @@ namespace panix\mod\delivery\migrations;
  */
 
 use panix\engine\db\Migration;
-use panix\mod\delivery\models\Delivery;
+use panix\mod\delivery\models\Subscribers;
 
 class m190393_104023_delivery extends Migration
 {
 
     public function up()
     {
-        $this->createTable(Delivery::tableName(), [
+        $this->createTable(Subscribers::tableName(), [
             'id' => $this->primaryKey()->unsigned(),
             'name' => $this->string(100)->null(),
             'email' => $this->string(100)->notNull(),
@@ -27,12 +27,12 @@ class m190393_104023_delivery extends Migration
             'created_at' => $this->integer(11)->null(),
         ], $this->tableOptions);
 
-        $this->createIndex('switch', Delivery::tableName(), 'switch');
+        $this->createIndex('switch', Subscribers::tableName(), 'switch');
     }
 
     public function down()
     {
-        $this->dropTable(Delivery::tableName());
+        $this->dropTable(Subscribers::tableName());
     }
 
 }

@@ -4,7 +4,7 @@ namespace panix\mod\delivery\widgets\subscribe;
 
 use Yii;
 use panix\engine\data\Widget;
-use panix\mod\delivery\models\Delivery;
+use panix\mod\delivery\models\Subscribers;
 
 /**
  * Class SubscribeWidget
@@ -15,8 +15,8 @@ class SubscribeWidget extends Widget
 
     public function run()
     {
-        $model = new Delivery();
-        if (Yii::$app->hasModule('delivery')){
+        $model = new Subscribers();
+        if (Yii::$app->hasModule('delivery')) {
             return $this->render($this->skin, ['model' => $model]);
         }
     }
