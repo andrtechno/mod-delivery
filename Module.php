@@ -2,12 +2,11 @@
 
 namespace panix\mod\delivery;
 
-
 use Yii;
-use panix\engine\WebModule;
 use yii\base\BootstrapInterface;
-use panix\mod\delivery\models\Delivery;
+use panix\engine\WebModule;
 use panix\mod\user\models\User;
+use panix\mod\delivery\models\Subscribers;
 
 /**
  * Class Module
@@ -16,7 +15,7 @@ use panix\mod\user\models\User;
 class Module extends WebModule implements BootstrapInterface
 {
 
-    public $icon = 'sentmail';
+    public $icon = 'envelope';
 
     public function bootstrap($app)
     {
@@ -59,7 +58,7 @@ class Module extends WebModule implements BootstrapInterface
 
     public static function getAllDelivery()
     {
-        $delivery = Delivery::find()->all();
+        $delivery = Subscribers::find()->all();
         $mails = array();
         $users = User::find()->where(['subscribe' => 1])->all();
         if (count($users)) {
