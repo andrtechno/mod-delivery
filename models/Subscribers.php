@@ -50,7 +50,6 @@ class Subscribers extends ActiveRecord
                 'class' => TimestampBehavior::class,
                 'attributes' => [
                     static::EVENT_BEFORE_INSERT => ['created_at'],
-                    //  static::EVENT_BEFORE_UPDATE => ['created_at']
                 ],
             ]
         ];

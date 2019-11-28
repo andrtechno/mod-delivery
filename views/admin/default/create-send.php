@@ -20,7 +20,7 @@
     <div class="col-lg-5">
         <div class="card">
             <div class="card-header">
-                <h6 class="card-title" style="padding-right: 15px;">
+                <h5 class="card-title">
                     <div class="row">
                         <div class="col-sm-5">
                             <div id="progress-send"></div>
@@ -32,7 +32,7 @@
                             </div>
                         </div>
                     </div>
-                </h6>
+                </h5>
 
             </div>
 

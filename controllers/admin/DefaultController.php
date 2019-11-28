@@ -33,12 +33,12 @@ class DefaultController extends AdminController
             [
                 'label' => Yii::t('delivery/default', 'CREATE_DELIVERY'),
                 'url' => ['create-delivery'],
-                'options' => array('class' => 'btn btn-success')
+                'options' => ['class' => 'btn btn-success']
             ],
             [
                 'label' => Yii::t('delivery/default', 'CREATE_SUBSCRIBER'),
                 'url' => ['create'],
-                'options' => array('class' => 'btn btn-success')
+                'options' => ['class' => 'btn btn-success']
             ]
         ];
 
@@ -73,7 +73,7 @@ class DefaultController extends AdminController
             $this->redirectPage($isNew, $post);
 
         }
-        return $this->render('update', array('model' => $model));
+        return $this->render('update', ['model' => $model]);
     }
 
     public function actionCreateDelivery()
@@ -139,7 +139,7 @@ class DefaultController extends AdminController
                 'users' => $users,
                 'delivery' => $delivery,
                 'model' => $model,
-                'mails' => $mails
+                'mails' => json_encode($mails)
             ]);
         } else {
             return $this->render($render, [
@@ -153,6 +153,7 @@ class DefaultController extends AdminController
 
     public function actionSendMail()
     {
+        $this->enableCsrfValidation=false;
         $request = Yii::$app->request;
         if ($request->isAjax && $request->isPost) {
             try {
@@ -160,7 +161,7 @@ class DefaultController extends AdminController
                 ->setFrom('noreply@' . $request->serverName)
                     ->setTo($request->post('email'))
                     //->setTo(['dev@pixelion.com.ua','andrew.panix@gmail.com'])
-                    ->setSubject($request->post('themename'))
+                    ->setSubject($request->post('subject'))
                     ->setHtmlBody($request->post('text'))
                     ->send();
             } catch (Exception $exception) {
@@ -194,7 +195,7 @@ class DefaultController extends AdminController
         return [
             [
                 'label' => Yii::t('app', 'Отправить новые товары'),
-                'url' => ['/admin/delivery/default/sendNewProduct'],
+                'url' => ['/admin/delivery/default/send-new-product'],
                 'icon' => 'shopcart',
                 'visible' => false
             ],

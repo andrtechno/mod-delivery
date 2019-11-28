@@ -4,6 +4,10 @@ namespace panix\mod\delivery\models;
 
 use panix\engine\base\Model;
 
+/**
+ * Class DeliveryForm
+ * @package panix\mod\delivery\models
+ */
 class DeliveryForm extends Model
 {
 
@@ -11,12 +15,12 @@ class DeliveryForm extends Model
 
     public $text;
     public $from;
-    public $themename;
+    public $subject;
 
     public function rules()
     {
         return [
-            [['text', 'from', 'themename'], 'required'],
+            [['text', 'from', 'subject'], 'required'],
             [['text'], 'string'],
         ];
     }

@@ -8,13 +8,13 @@ namespace panix\mod\delivery\migrations;
  * @author PIXELION CMS development team <dev@pixelion.com.ua>
  * @link http://pixelion.com.ua PIXELION CMS
  *
- * Class m190393_104023_delivery
+ * Class m190393_104023_subscribers
  */
 
 use panix\engine\db\Migration;
 use panix\mod\delivery\models\Subscribers;
 
-class m190393_104023_delivery extends Migration
+class m190393_104023_subscribers extends Migration
 {
 
     public function up()

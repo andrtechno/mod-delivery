@@ -12,24 +12,7 @@ if ($result['success']) {
     echo 'ok';
 } else {
     \panix\mod\delivery\widgets\subscribe\SubscribeAsset::register($this);
-    /*$form = $this->beginWidget('CActiveForm', array(
-        'enableAjaxValidation' => true,
-        'id' => 'delivery-form',
-        'action' => Yii::$app->createUrl('/delivery/subscribe.action'),
-        'clientOptions' => array(
-            'validateOnSubmit' => true,
-            'validateOnChange' => false,
-        ),
-        'htmlOptions' => array(
-            'name' => 'delivery-form',
-            'onsubmit' => "return false;",
-            'onkeypress' => 'if(event.keyCode==13){send("#delivery-form", "#side-subscribe")}'
-        )
-            ));
-
-    if ($model->hasErrors())
-        $form->error($model, 'email');*/
-    ?>
+?>
 <div class="subscribe_form">
     <?php $form = ActiveForm::begin([
         'action' => ['/delivery/subscribe'],
@@ -45,7 +28,7 @@ if ($result['success']) {
             'placeholder' => $model->getAttributeLabel('email')
         ])->label(false); ?>
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('delivery/default', 'BUTTON'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton(Yii::t('wgt_SubscribeWidget/default', 'BUTTON'), ['class' => 'btn btn-primary']) ?>
     </div>
     <?php ActiveForm::end(); ?>
 </div>
