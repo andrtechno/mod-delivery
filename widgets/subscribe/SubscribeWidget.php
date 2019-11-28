@@ -1,36 +1,24 @@
 <?php
+namespace panix\mod\delivery\widgets\subscribe;
+
+
+use Yii;
+use panix\engine\data\Widget;
+use panix\mod\delivery\models\Delivery;
 
 /**
- * Install to main/AjaxController actions 
- * public function actions() {
- *      return array(
- *          ...
- *          'subscribe.' => 'mod.delivery.widgets.subscribe.SubscribeWidget',
- *      );
- *  }
- * @return URL /ajax/subscribe.action
- * 
+ * Class SubscribeWidget
+ * @package panix\mod\delivery\widgets\subscribe
  */
-class SubscribeWidget extends CWidget {
+class SubscribeWidget extends Widget
+{
 
-    /**
-     * Action
-     */
-    public static function actions() {
-        return array(
-            'action' => 'mod.delivery.widgets.subscribe.actions.SubscribeAction',
-        );
-    }
-
-    /**
-     * Run widget
-     */
-    public function run() {
-        Yii::import('mod.delivery.DeliveryModule');
-        Yii::import('mod.delivery.models.Delivery');
+    public function run()
+    {
         $model = new Delivery();
-        if (Yii::app()->user->isGuest && Yii::app()->hasModule('delivery'))
-            $this->render($this->skin, array('model' => $model));
+        if (Yii::$app->hasModule('delivery')){
+            return $this->render($this->skin, ['model' => $model]);
+        }
     }
 
 }

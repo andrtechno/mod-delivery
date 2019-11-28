@@ -32,9 +32,7 @@ class m190393_104023_delivery extends Migration
 
     public function down()
     {
-        echo "m190393_104023_delivery cannot be reverted.\n";
         $this->dropTable(Delivery::tableName());
-        return false;
     }
 
 }

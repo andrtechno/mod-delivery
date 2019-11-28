@@ -1,30 +1,52 @@
 <?php
+
 namespace panix\mod\delivery;
+
+
 use Yii;
-class Module extends \panix\engine\WebModule {
+use panix\engine\WebModule;
+use yii\base\BootstrapInterface;
+use panix\mod\delivery\models\Delivery;
+use panix\mod\user\models\User;
+
+/**
+ * Class Module
+ * @package panix\mod\delivery
+ */
+class Module extends WebModule implements BootstrapInterface
+{
 
     public $icon = 'sentmail';
-    public $routes = array(
-        'delivery/' => 'delivery/default/index',
-        'delivery/send/' => 'delivery/default/send',
-        'delivery/<action:[.\w]+>' => 'delivery/default/<action>',
-        'delivery/<action:[.\w]>/*' => 'delivery/default/<action>',
-    );
 
-    public function getAdminMenu() {
-        return array(
-            'modules' => array(
-                'items' => array(
-                    array(
+    public function bootstrap($app)
+    {
+        $app->urlManager->addRules(
+            [
+                'delivery' => 'delivery/default/index',
+                'delivery/<action:[0-9a-zA-Z_\-]+>' => 'delivery/default/<action>',
+
+            ],
+            true
+        );
+    }
+
+    public function getAdminMenu()
+    {
+        return [
+            'modules' => [
+                'items' => [
+                    [
                         'label' => 'Delivery',
                         'url' => ['/admin/delivery'],
                         'icon' => $this->icon,
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
     }
-    public function getInfo() {
+
+    public function getInfo()
+    {
         return [
             'label' => Yii::t('delivery/default', 'MODULE_NAME'),
             'author' => 'andrew.panix@gmail.com',
@@ -34,10 +56,12 @@ class Module extends \panix\engine\WebModule {
             'url' => ['/admin/delivery'],
         ];
     }
-    public static function getAllDelivery() {
+
+    public static function getAllDelivery()
+    {
         $delivery = Delivery::find()->all();
         $mails = array();
-        $users = User::find()->subscribe()->all();
+        $users = User::find()->where(['subscribe' => 1])->all();
         if (count($users)) {
             foreach ($users as $user) {
                 $mails[] = $user->email;
