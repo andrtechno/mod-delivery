@@ -5,7 +5,7 @@ use yii\widgets\Pjax;
 
 
 Pjax::begin([
-    'id' => 'pjax-grid-subscribe',
+    'dataProvider'=>$dataProvider
 ]);
 
 echo GridView::widget([
