@@ -178,9 +178,9 @@ class DefaultController extends AdminController
                 print_r($product->name);
                 echo '<br>';
             }
-            $this->setFlashMessage(Yii::t('app', 'Сообщение оправлено подписчикам.'));
+            $this->setFlashMessage(Yii::t('app/default', 'Сообщение оправлено подписчикам.'));
         } else {
-            $this->setFlashMessage(Yii::t('app', 'Новых товаров за сегодня небыло добавлено!'));
+            $this->setFlashMessage(Yii::t('app/default', 'Новых товаров за сегодня небыло добавлено!'));
         }
         $this->redirect(['index']);
     }
@@ -194,7 +194,7 @@ class DefaultController extends AdminController
     {
         return [
             [
-                'label' => Yii::t('app', 'Отправить новые товары'),
+                'label' => Yii::t('app/default', 'Отправить новые товары'),
                 'url' => ['/admin/delivery/default/send-new-product'],
                 'icon' => 'shopcart',
                 'visible' => false

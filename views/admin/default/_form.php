@@ -63,7 +63,7 @@ echo $form->field($model, 'text')->widget(TinyMce::class);
 ], ['class' => 'select form-control']); ?>
 
 <div class="form-group text-center">
-    <?= Html::submitButton(Yii::t('app', 'Начать отправку'),['class'=>'btn btn-success']) ?>
+    <?= Html::submitButton(Yii::t('app/default', 'Начать отправку'),['class'=>'btn btn-success']) ?>
 </div>
 
 
