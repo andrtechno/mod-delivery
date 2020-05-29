@@ -38,6 +38,7 @@ class Module extends WebModule implements BootstrapInterface
                         'label' => Yii::t('delivery/default', 'MODULE_NAME'),
                         'url' => ['/admin/delivery'],
                         'icon' => $this->icon,
+                        'visible' => Yii::$app->user->can('/delivery/admin/default/index') || Yii::$app->user->can('/delivery/admin/default/*'),
                     ],
                 ],
             ],
