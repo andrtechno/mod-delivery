@@ -36,19 +36,23 @@ class DefaultController extends WebController
         $load = $model->load(Yii::$app->request->post());
          if (Yii::$app->request->isAjax) {
              if (Yii::$app->request->isPost && $load) {
-                 Yii::$app->response->format = Response::FORMAT_JSON;
-                 $result = ActiveForm::validate($model);
-                 if (count($result)) {
-                     return $result;
+               //  Yii::$app->response->format = Response::FORMAT_JSON;
+                 $errors = ActiveForm::validate($model);
+                 if ($errors) {
+                     $result['success'] = false;
+                     $result['errors']=$errors;
+
                  } else {
-                     Yii::$app->response->format = Response::FORMAT_RAW;
                      $model->save();
                      $result['success'] = true;
-                     return $this->renderAjax('@delivery/widgets/subscribe/views/_subscribe', ['model' => $model, 'result' => $result]);
+                     $result['message'] = Yii::t('delivery/default','SUBSCRIBE_SUCCESS',$model->email);
+
+                    // return $this->renderAjax('@delivery/widgets/subscribe/views/_subscribe', ['model' => $model, 'result' => $result]);
 
                  }
 
              }
+             return $this->asJson($result);
          }
         /*if ($load) {
             if ($model->validate()) {

@@ -42,7 +42,7 @@ class DefaultController extends AdminController
             ]
         ];
 
-        $this->breadcrumbs[] = Yii::t('delivery/default', 'MODULE_NAME');
+        $this->view->params['breadcrumbs'][] = Yii::t('delivery/default', 'MODULE_NAME');
         $searchModel = new SubscribersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
@@ -61,11 +61,11 @@ class DefaultController extends AdminController
 
         $this->pageName = Yii::t('delivery/default', ($model->isNewRecord) ? 'CREATE_SUBSCRIBER' : 'UPDATE_SUBSCRIBER');
 
-        $this->breadcrumbs[] = [
+        $this->view->params['breadcrumbs'][] = [
             'label' => Yii::t('delivery/default', 'MODULE_NAME'),
             'url' => ['index']
         ];
-        $this->breadcrumbs[] = $this->pageName;
+        $this->view->params['breadcrumbs'][] = $this->pageName;
         $isNew = $model->isNewRecord;
         $post = Yii::$app->request->post();
         if ($model->load($post) && $model->validate()) {
@@ -87,11 +87,11 @@ class DefaultController extends AdminController
         $render = 'create-send';
 
 
-        $this->breadcrumbs[] = [
+        $this->view->params['breadcrumbs'][] = [
             'label' => Yii::t('delivery/default', 'MODULE_NAME'),
             'url' => ['index']
         ];
-        $this->breadcrumbs[] = $this->pageName;
+        $this->view->params['breadcrumbs'][] = $this->pageName;
 
         if ($model->load(Yii::$app->request->post())) {
             if ($model->validate()) {

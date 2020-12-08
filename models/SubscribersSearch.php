@@ -5,26 +5,31 @@ namespace panix\mod\delivery\models;
 use Yii;
 use yii\base\Model;
 use panix\engine\data\ActiveDataProvider;
+
 /**
  * SubscribersSearch represents the model behind the search form about `panix\mod\delivery\models\Subscribers`.
  */
-class SubscribersSearch extends Subscribers {
+class SubscribersSearch extends Subscribers
+{
 
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['id'], 'integer'],
-            [['email'], 'safe'],
+            [['email', 'name'], 'string'],
+            [['created_at'], 'date', 'format' => 'php:Y-m-d']
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function scenarios() {
+    public function scenarios()
+    {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -36,12 +41,13 @@ class SubscribersSearch extends Subscribers {
      *
      * @return ActiveDataProvider
      */
-    public function search($params) {
-        $query = static::find();
+    public function search($params)
+    {
+        $query = Subscribers::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-          //  'sort'=>self::getSort()
+            //  'sort'=>self::getSort()
         ]);
 
         $this->load($params);
@@ -58,6 +64,8 @@ class SubscribersSearch extends Subscribers {
 
 
         $query->andFilterWhere(['like', 'email', $this->email]);
+        $query->andFilterWhere(['like', 'created_at', $this->created_at]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
 
         return $dataProvider;

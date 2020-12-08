@@ -12,6 +12,8 @@ use panix\mod\user\models\User;
  *
  * @property integer $id
  * @property string $email
+ * @property string $name
+ * @property string $created_at
  * @package panix\mod\delivery\models
  */
 class Subscribers extends ActiveRecord

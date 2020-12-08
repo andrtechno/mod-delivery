@@ -1,7 +1,7 @@
 <?php
 
 use panix\engine\grid\GridView;
-use yii\widgets\Pjax;
+use panix\engine\widgets\Pjax;
 
 
 Pjax::begin([
@@ -22,7 +22,8 @@ echo GridView::widget([
         ],
         [
             'attribute' => 'created_at',
-            'format' => 'datetime',
+           // 'format' => 'datetime',
+            'class' => 'panix\engine\grid\columns\jui\DatepickerColumn',
             'contentOptions' => ['class' => 'text-center'],
         ],
         [

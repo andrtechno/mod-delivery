@@ -5,32 +5,60 @@ use panix\engine\Html;
 
 /** @var \yii\web\View $this */
 
+\panix\mod\delivery\widgets\subscribe\SubscribeAsset::register($this);
+
+$this->registerJs("
+
+$(document).on('beforeSubmit', '#subscribe-form', function (e) {
+    var form = $(this);
+    var formData = form.serialize();
+        $.ajax({
+        url: form.attr('action'),
+        type: form.attr('method'),
+        data: formData,
+        success: function (response) {
+            if(response.success){
+                $('#subscribers-email').val('');
+                common.notify(response.message,'success');
+            }else{
+                form.yiiActiveForm('updateMessages', response.errors, true);
+            }
+        },
+        error: function () {
+            common.notify('error','error');
+        }
+    });
+    
+    return false; // Cancel form submitting.
+});
+")
 ?>
-    <p><?= Yii::t('wgt_SubscribeWidget/default', 'WGT_TEXT') ?></p>
-<?php
-if ($result['success']) {
-    echo 'ok';
-} else {
-    \panix\mod\delivery\widgets\subscribe\SubscribeAsset::register($this);
-?>
+<p><?= Yii::t('wgt_SubscribeWidget/default', 'WGT_TEXT') ?></p>
+
 <div class="subscribe_form">
-    <?php $form = ActiveForm::begin([
+    <?php
+    $form = ActiveForm::begin([
         'action' => ['/delivery/subscribe'],
         'id' => 'subscribe-form',
-        'options'=>[
-                'class'=>'mc-form footer-newsletter'
-        ]
+        'enableClientValidation' => true,
         //'enableAjaxValidation' => true,
-    ]); ?>
+        'options' => [
+            // 'class' => ''
+        ]
+
+    ]);
+    ?>
     <?= $form->field($model, 'email')
         ->textInput([
-            'class' => 'form-control',
+            'class' => 'form-control2',
             'placeholder' => $model->getAttributeLabel('email')
         ])->label(false); ?>
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('wgt_SubscribeWidget/default', 'BUTTON'), ['class' => 'btn btn-primary']) ?>
-    </div>
+
+        <?php //echo Html::submitButton(Yii::t('wgt_SubscribeWidget/default', 'BUTTON'), ['class' => 'btn btn-primary']) ?>
+
     <?php ActiveForm::end(); ?>
 </div>
 
-<?php } ?>
+
+
+
