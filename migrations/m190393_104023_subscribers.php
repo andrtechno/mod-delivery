@@ -23,6 +23,8 @@ class m190393_104023_subscribers extends Migration
             'id' => $this->primaryKey()->unsigned(),
             'name' => $this->string(100)->null(),
             'email' => $this->string(100)->notNull(),
+            'user_agent' => $this->text()->null(),
+            'ip_create' => $this->string(50)->null(),
             'switch' => $this->boolean()->defaultValue(1),
             'created_at' => $this->integer(11)->null(),
         ], $this->tableOptions);

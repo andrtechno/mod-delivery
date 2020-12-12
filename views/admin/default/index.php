@@ -2,10 +2,11 @@
 
 use panix\engine\grid\GridView;
 use panix\engine\widgets\Pjax;
-
+use panix\engine\Html;
 
 Pjax::begin([
-    'dataProvider'=>$dataProvider
+    'dataProvider' => $dataProvider,
+    'options' => ['id' => 'pjax-grid-subscribers0']
 ]);
 
 echo GridView::widget([
@@ -14,15 +15,23 @@ echo GridView::widget([
     'filterModel' => $searchModel,
     'layoutOptions' => ['title' => $this->context->pageName],
     'columns' => [
-        'email',
         [
-            'attribute' => 'name',
+            'class' => 'panix\engine\grid\columns\CheckboxColumn',
+        ],
+        [
+            'attribute' => 'email',
             'format' => 'raw',
-            'contentOptions' => ['class' => 'text-center'],
+            'contentOptions' => ['class' => 'text-left'],
+            'value' => function ($model) {
+                $name = '';
+                if ($model->name) {
+                    $name .= ' <span class="text-muted">(' . $model->name . ')</span>';
+                }
+                return Html::mailto($model->email) . '' . $name;
+            }
         ],
         [
             'attribute' => 'created_at',
-           // 'format' => 'datetime',
             'class' => 'panix\engine\grid\columns\jui\DatepickerColumn',
             'contentOptions' => ['class' => 'text-center'],
         ],

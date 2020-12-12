@@ -33,8 +33,6 @@ $(document).on('beforeSubmit', '#subscribe-form', function (e) {
 });
 ")
 ?>
-<p><?= Yii::t('wgt_SubscribeWidget/default', 'WGT_TEXT') ?></p>
-
 <div class="subscribe_form">
     <?php
     $form = ActiveForm::begin([
@@ -54,7 +52,7 @@ $(document).on('beforeSubmit', '#subscribe-form', function (e) {
             'placeholder' => $model->getAttributeLabel('email')
         ])->label(false); ?>
 
-        <?php //echo Html::submitButton(Yii::t('wgt_SubscribeWidget/default', 'BUTTON'), ['class' => 'btn btn-primary']) ?>
+    <?php //echo Html::submitButton(Yii::t('wgt_SubscribeWidget/default', 'BUTTON'), ['class' => 'btn btn-primary']) ?>
 
     <?php ActiveForm::end(); ?>
 </div>
