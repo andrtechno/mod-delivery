@@ -45,6 +45,7 @@ $(document).on('beforeSubmit', '#subscribe-form', function (e) {
         ]
 
     ]);
+    //Yii::t('wgt_SubscribeWidget/default', 'BUTTON')
     ?>
     <?= $form->field($model, 'email')
         ->textInput([
@@ -52,7 +53,7 @@ $(document).on('beforeSubmit', '#subscribe-form', function (e) {
             'placeholder' => $model->getAttributeLabel('email')
         ])->label(false); ?>
 
-    <?php //echo Html::submitButton(Yii::t('wgt_SubscribeWidget/default', 'BUTTON'), ['class' => 'btn btn-primary']) ?>
+    <?php echo Html::submitButton(Yii::t('wgt_SubscribeWidget/default', 'BUTTON'), ['class' => 'btn btn-primary btn-subscribe']) ?>
 
     <?php ActiveForm::end(); ?>
 </div>
