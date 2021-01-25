@@ -8,5 +8,5 @@ return [
     'CREATE_SUBSCRIBER' => 'Добавить подписчика',
     'UPDATE_SUBSCRIBER' => 'Редактирование подписчика',
     'SUBSCRIBE_USER_ALREADY' => 'Пользователь с какой почтой "<strong>{attr}</strong>" уже подписан.',
-    'SUBSCRIBE_SUCCESS'=>'Ваш E-mail "{0}" успешно подписалн.'
+    'SUBSCRIBE_SUCCESS'=>'Ваш E-mail "{0}" успешно подписан.'
 ];
