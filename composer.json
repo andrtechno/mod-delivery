@@ -3,7 +3,7 @@
     "description": "Module delivery",
     "keywords": ["pixelion-cms", "module", "delivery"],
     "homepage": "https://github.com/andrtechno/mod-delivery",
-    "type": "yii2-extension",
+    "type": "pixelion-module",
     "license": "MIT",
     "minimum-stability": "dev",
     "authors": [
